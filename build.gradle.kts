@@ -35,7 +35,3 @@ dependencies {
     // Shiro
     implementation("com.mikuac:shiro:2.1.6")
 }
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
