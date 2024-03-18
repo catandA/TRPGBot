@@ -1,0 +1,5 @@
+server:
+  port: 16279
+shiro:
+  plugin-list:
+    - me.catand.trpgbot.plugins.DicePlugin
