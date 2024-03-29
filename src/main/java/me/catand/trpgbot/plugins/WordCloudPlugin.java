@@ -190,23 +190,23 @@ public class WordCloudPlugin {
 		return contents;
 	}
 
-	@GroupMessageHandler
-	@MessageHandlerFilter(cmd = WORD_CLOUD)
-	public void handler(GroupMessageEvent event, Bot bot, Matcher matcher) {
-		int msgId = event.getMessageId();
-		try {
-			String type = matcher.group(1);
-			String range = matcher.group(2);
-			List<String> contents = getWords(event.getUserId(), event.getGroupId(), type, range);
-			if (contents.isEmpty()) {
-				throw new RuntimeException("屁话没说过 >:(");
-			}
-			String msg = MsgUtils.builder().reply(msgId).img("base64://" + generateWordCloud(contents)).build();
-			bot.sendGroupMsg(event.getGroupId(), msg, false);
-		} catch (Exception e) {
-			bot.sendGroupMsg(event.getGroupId(), "生成词云失败: " + e.getMessage(), false);
-		}
-	}
+//	@GroupMessageHandler
+//	@MessageHandlerFilter(cmd = WORD_CLOUD)
+//	public void handler(GroupMessageEvent event, Bot bot, Matcher matcher) {
+//		int msgId = event.getMessageId();
+//		try {
+//			String type = matcher.group(1);
+//			String range = matcher.group(2);
+//			List<String> contents = getWords(event.getUserId(), event.getGroupId(), type, range);
+//			if (contents.isEmpty()) {
+//				throw new RuntimeException("屁话没说过 >:(");
+//			}
+//			String msg = MsgUtils.builder().reply(msgId).img("base64://" + generateWordCloud(contents)).build();
+//			bot.sendGroupMsg(event.getGroupId(), msg, false);
+//		} catch (Exception e) {
+//			bot.sendGroupMsg(event.getGroupId(), "生成词云失败: " + e.getMessage(), false);
+//		}
+//	}
 
 	@AnyMessageHandler
 	@MessageHandlerFilter(cmd = WORD_CLOUD_CRON)
