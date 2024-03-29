@@ -26,12 +26,23 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     // Shiro
-    implementation("com.mikuac:shiro:2.1.6")
+    implementation("com.mikuac:shiro:2.2.0")
+
+    // Database
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
+    implementation("org.hibernate.orm:hibernate-community-dialects:6.4.4.Final")
+
+    // 词云
+    implementation("com.kennycason:kumo-core:1.28")
+    //implementation("com.kennycason:kumo-tokenizers:1.28")
+
+    // 结巴分词
+    implementation("com.huaban:jieba-analysis:1.0.2")
 }

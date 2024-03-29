@@ -1,5 +1,19 @@
 server:
   port: 16279
 shiro:
+  ws:
+    server:
+      enable: true
+      url: "/ws/shiro"
   plugin-list:
+    - me.catand.trpgbot.plugins.LogPlugin
     - me.catand.trpgbot.plugins.DicePlugin
+spring:
+  datasource:
+    url: jdbc:sqlite:data.sqlite
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.community.dialect.SQLiteDialect
