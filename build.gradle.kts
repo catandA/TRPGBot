@@ -36,7 +36,7 @@ dependencies {
 
     // Database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
+    implementation("org.xerial:sqlite-jdbc:3.46.1.0")
     implementation("org.hibernate.orm:hibernate-community-dialects:6.4.4.Final")
 
     // 词云
