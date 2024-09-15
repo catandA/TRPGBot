@@ -55,7 +55,7 @@ public class WordCloudPlugin {
 	// 但是我是懒狗! >:^)
 	// 需要改的时候直接改此处源码重新编译
 	// 配置文件以后再说
-	private static final String ZONE = "Asia/Shanghai";
+	public static final String ZONE = "Asia/Shanghai";
 	private static final long botQq = 1789937107L;
 	// 定时任务推送速率（5秒一个群）
 	private static final int CRON_TASK_RATE = 5;
@@ -68,6 +68,11 @@ public class WordCloudPlugin {
 	private static final List<Long> ADMIN_LIST = new ArrayList<>(Arrays.asList(3047354896L, 1831901504L));
 	private static final String WORD_CLOUD = "^(我的|本群)(今日|本周|本月|本年)词云";
 	private static final String WORD_CLOUD_CRON = "^词云\\s(day|week|month)";
+	private static final long dayInSeconds = 24 * 60 * 60;
+	private static final long threeDaysInSeconds = 3 * dayInSeconds;
+	private static final long weekInSeconds = 7 * dayInSeconds;
+	private static final long monthInSeconds = 30 * dayInSeconds;
+	private static final long yearInSeconds = 365 * dayInSeconds;
 
 	@Resource
 	private BotContainer botContainer;
@@ -131,12 +136,22 @@ public class WordCloudPlugin {
 				.collect(Collectors.toList());
 	}
 
+	public List<Long> queryActiveMembers(long groupId) {
+		long nowTimestamp = Instant.now().getEpochSecond();
+		long startOfWeekTimestamp = nowTimestamp - threeDaysInSeconds;
+		ArrayList<WordCloudEntity> result = new ArrayList<>(repository.findAllByGroupIdAndTimeBetween(groupId, startOfWeekTimestamp, nowTimestamp));
+		ArrayList<Long> activeMembers = new ArrayList<>();
+		for (WordCloudEntity entity : result) {
+			if (!activeMembers.contains(entity.getSenderId())) {
+				activeMembers.add(entity.getSenderId());
+			}
+		}
+		activeMembers.remove(botQq);
+		return activeMembers;
+	}
+
 	private List<String> getWordsForRange(long userId, long groupId, String type, String range) {
 		long nowTimestamp = Instant.now().getEpochSecond();
-		long dayInSeconds = 24 * 60 * 60;
-		long weekInSeconds = 7 * dayInSeconds;
-		long monthInSeconds = 30 * dayInSeconds;
-		long yearInSeconds = 365 * dayInSeconds;
 
 		long startOfDayTimestamp = nowTimestamp - dayInSeconds;
 		long startOfWeekTimestamp = nowTimestamp - weekInSeconds;
