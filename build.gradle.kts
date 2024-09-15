@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.3"
+    id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.4"
 }
 
@@ -32,12 +32,12 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     // Shiro
-    implementation("com.mikuac:shiro:2.2.0")
+    implementation("com.mikuac:shiro:2.2.9")
 
     // Database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
-    implementation("org.hibernate.orm:hibernate-community-dialects:6.4.4.Final")
+    implementation("org.xerial:sqlite-jdbc:3.46.1.0")
+    implementation("org.hibernate.orm:hibernate-community-dialects:6.4.10.Final")
 
     // 词云
     implementation("com.kennycason:kumo-core:1.28")
