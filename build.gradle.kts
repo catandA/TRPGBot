@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.3.3"
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
 group = "me.catand"
@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     // Shiro
-    implementation("com.mikuac:shiro:2.2.9")
+    implementation("com.mikuac:shiro:2.3.2")
 
     // Database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
