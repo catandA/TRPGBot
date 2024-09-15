@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     // Shiro
-    implementation("com.mikuac:shiro:2.2.9")
+    implementation("com.mikuac:shiro:2.3.2")
 
     // Database
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
