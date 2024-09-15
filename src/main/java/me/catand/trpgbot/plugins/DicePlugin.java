@@ -26,10 +26,14 @@ public class DicePlugin extends BotPlugin {
 				.map(map -> map.get("text"))
 				.map(map -> map.replaceAll("\\s+", " "))
 				.toList();
-		if (!arrayMsg.isEmpty()) {
-			sendMsg.at(event.getUserId()).text("\n");
+		if (arrayMsg.isEmpty()) {
+			return MESSAGE_IGNORE;
+		} else {
 			Matcher matcher = pattern.matcher(arrayMsg.getFirst());
-			if (matcher.find()) {
+			if (!matcher.find()) {
+				return MESSAGE_IGNORE;
+			} else {
+				sendMsg.at(event.getUserId()).text("\n");
 				int times;
 				if (matcher.group(1).isEmpty()) {
 					times = 1;
@@ -50,13 +54,9 @@ public class DicePlugin extends BotPlugin {
 						sendMsg.text(roll + (i == times - 1 ? "=[" + sum + "]!" : "+"));
 					}
 				}
-			} else {
-				return MESSAGE_IGNORE;
 			}
 			bot.sendGroupMsg(event.getGroupId(), sendMsg.build(), false);
 			return MESSAGE_BLOCK;
-		} else {
-			return MESSAGE_IGNORE;
 		}
 	}
 }
