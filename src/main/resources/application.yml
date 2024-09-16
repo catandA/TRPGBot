@@ -9,6 +9,7 @@ shiro:
     - me.catand.trpgbot.plugins.LogPlugin
     - me.catand.trpgbot.plugins.DicePlugin
     - me.catand.trpgbot.plugins.PairPlugin
+    - me.catand.trpgbot.plugins.YGOPlugin
 spring:
   datasource:
     url: jdbc:sqlite:data.sqlite

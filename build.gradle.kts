@@ -20,6 +20,7 @@ configurations {
 repositories {
     maven("https://maven.aliyun.com/repository/public")
     maven("https://maven.aliyun.com/repository/spring/")
+    maven("https://maven.aliyun.com/repository/javafx/")
     maven("https://jitpack.io")
     mavenCentral()
 }
@@ -45,4 +46,7 @@ dependencies {
 
     // 结巴分词
     implementation("com.huaban:jieba-analysis:1.0.2")
+
+    // JavaFX
+    implementation("org.openjfx:javafx:24-ea+5")
 }

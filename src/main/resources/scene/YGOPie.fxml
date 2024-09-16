@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="600.0" prefWidth="600.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: rgba(30, 30, 30, 0.784); -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="52.0" prefWidth="540.0" spacing="20.0">
+                     <children>
+                        <Text id="11" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="时" textAlignment="CENTER">
+                           <font>
+                              <Font name="Noto Sans SC Black" size="50.0" />
+                           </font>
+                        </Text>
+                        <Text id="12" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="局" textAlignment="CENTER">
+                           <font>
+                              <Font name="Noto Sans SC Black" size="50.0" />
+                           </font>
+                        </Text>
+                        <Text id="13" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="图" textAlignment="CENTER">
+                           <font>
+                              <Font name="Noto Sans SC Black" size="50.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="481.0" prefWidth="0.0" spacing="15.0">
+                           <children>
+                              <Text id="21" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="一">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="22" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="目">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="23" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="了">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="24" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="然">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <PieChart id="pieChart" labelsVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="520.0" style="-fx-font-family: Noto Sans SC; -fx-text-fill: #d4d4d4;" />
+                        <VBox alignment="CENTER" prefHeight="481.0" prefWidth="0.0" spacing="15.0">
+                           <children>
+                              <Text id="31" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="不">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="32" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="言">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="33" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="而">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Text id="34" fill="#d4d4d4" strokeType="OUTSIDE" strokeWidth="0.0" text="喻">
+                                 <font>
+                                    <Font name="Noto Sans SC Black" size="25.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" left="15.0" right="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>
