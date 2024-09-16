@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
+    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 group = "me.catand"
@@ -15,6 +16,11 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+}
+
+javafx {
+    version = "24-ea+5"
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.swing")
 }
 
 repositories {
@@ -46,7 +52,4 @@ dependencies {
 
     // 结巴分词
     implementation("com.huaban:jieba-analysis:1.0.2")
-
-    // JavaFX
-    implementation("org.openjfx:javafx:24-ea+5")
 }
