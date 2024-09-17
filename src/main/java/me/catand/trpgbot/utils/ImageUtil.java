@@ -9,10 +9,7 @@ import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Base64;
 import java.util.Random;
 
@@ -156,5 +153,13 @@ public class ImageUtil {
 
 	public static BufferedImage convertToBufferedImage(Image image) {
 		return SwingFXUtils.fromFXImage(image, null);
+	}
+
+	public static String convertJpgFileInputStreamToBase64(FileInputStream fileInputStream) throws IOException {
+		// 将FileInputStream读取为BufferedImage
+		BufferedImage bufferedImage = ImageIO.read(fileInputStream);
+
+		// 使用现有的ImageToBase64方法进行转换
+		return ImageToBase64(bufferedImage);
 	}
 }
