@@ -157,6 +157,8 @@ public class YGOPlugin extends BotPlugin {
 							userSearchDataList.add(isInUserList);
 
 							handleMessage(searchCard(arg, 0, 1, ""), sendMsg);
+						} else {
+							handleMessage(returnMsg, sendMsg);
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
