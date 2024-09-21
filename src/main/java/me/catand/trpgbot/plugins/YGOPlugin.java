@@ -297,7 +297,7 @@ public class YGOPlugin extends BotPlugin {
 
 								// 不存在则返回
 								if (isInUserList.userSearchContent.isEmpty()) {
-									sendMsg.text("null");
+									sendMsg.text("没有用户状态信息");
 								} else {
 									// 修改用户数据并添加到列表
 									isInUserList.setUserSearchCard(Integer.parseInt(arg));
@@ -369,7 +369,7 @@ public class YGOPlugin extends BotPlugin {
 
 								// 不存在则返回
 								if (isInUserList.userSearchContent.isEmpty()) {
-									sendMsg.text("null");
+									sendMsg.text("没有用户状态信息");
 								} else {
 									// 修改用户数据并添加到列表
 									isInUserList.setUserSearchCard(Integer.parseInt(arg));
@@ -446,7 +446,7 @@ public class YGOPlugin extends BotPlugin {
 
 								// 不存在则返回
 								if (isInUserList.userSearchContent.isEmpty()) {
-									sendMsg.text("null");
+									sendMsg.text("没有用户状态信息");
 								} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
 									// 修改用户数据并添加到列表
 									isInUserList.setUserSearchCard(Integer.parseInt(arg));
@@ -479,6 +479,7 @@ public class YGOPlugin extends BotPlugin {
 						break;
 				}
 			} catch (Exception e) {
+				sendMsg.text("出错了\n" + e.getMessage());
 				e.printStackTrace();
 			}
 
