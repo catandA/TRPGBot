@@ -553,8 +553,8 @@ public class YGOPlugin extends BotPlugin {
 				outputResult.append(matcher.group(3));
 			}
 
-			outputResult.append("\n卡片密��：").append(cardIdResultMatch.get(resultNumber - 1).group(1));
-			outputResult.append("{forwardmessage的图片}：").append(cardIdResultMatch.get(resultNumber - 1).group(1));
+			outputResult.append("\n卡片密码：").append(cardIdResultMatch.get(resultNumber - 1).group(1));
+			outputResult.append("{forwardmessage的图片}:").append(cardIdResultMatch.get(resultNumber - 1).group(1));
 			outputResult.append("{forwardmessage的分割符}");
 
 			resultNumber++;
