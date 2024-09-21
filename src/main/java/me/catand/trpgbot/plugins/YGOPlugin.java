@@ -278,41 +278,35 @@ public class YGOPlugin extends BotPlugin {
 						break;
 					}
 					case "卡片收录": {
-						UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
-
-						// 不存在则返回
-						if (isInUserList.userSearchContent.equals("")) {
-							sendMsg.text("null");
-						} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
-							// 修改用户数据并添加到列表
-							userSearchDataList.add(isInUserList);
-							// 返回单卡数据
-							sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "md卡包") + "\n" +
-									searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "ocg收录"));
-						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
-						break;
-					}
-
-					case "卡片收录 ": {
-						Matcher matchResult = Pattern.compile("卡片收录 (\\d*)").matcher(arg);
-						if (!matchResult.find()) sendMsg.text("null");
-						String cardNumber = matchResult.group(1);
-
-						if (Integer.parseInt(cardNumber) < 11) {
+						if (arg.isEmpty() || arg.isBlank()) {
 							UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
 
 							// 不存在则返回
-							if (isInUserList.userSearchContent.equals("")) {
+							if (isInUserList.userSearchContent.isEmpty()) {
 								sendMsg.text("null");
-							} else {
+							} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
 								// 修改用户数据并添加到列表
-								isInUserList.setUserSearchCard(Integer.parseInt(cardNumber));
-								isInUserList.setUserSearchProcess(0);
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
 								sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "md卡包") + "\n" +
 										searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "ocg收录"));
+							}
+						} else {
+							if (Integer.parseInt(arg) < 11) {
+								UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
+
+								// 不存在则返回
+								if (isInUserList.userSearchContent.isEmpty()) {
+									sendMsg.text("null");
+								} else {
+									// 修改用户数据并添加到列表
+									isInUserList.setUserSearchCard(Integer.parseInt(arg));
+									isInUserList.setUserSearchProcess(0);
+									userSearchDataList.add(isInUserList);
+									// 返回单卡数据
+									sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "md卡包") + "\n" +
+											searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "ocg收录"));
+								}
 							}
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
@@ -320,75 +314,15 @@ public class YGOPlugin extends BotPlugin {
 					}
 
 					case "卡片调整": {
-						UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
-
-						// 不存在则返回
-						if (isInUserList.userSearchContent.equals("")) {
-							sendMsg.text("null");
-						} else {
-							// 修改用户数据并添加到列表
-							userSearchDataList.add(isInUserList);
-							String returnMessage = searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文调整") +
-									"{forwardmessage的分割符}" +
-									searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文faq");
-							if (returnMessage.length() > 5000) {
-								// 查卡
-								String cardToSearchInURL = URLEncoder.encode(isInUserList.userSearchContent, "UTF-8").replace(" ", "+");
-								String WebData = getWebSourceCode("https://ygocdb.com/more?search=" + cardToSearchInURL + "&start=" + ((isInUserList.userSearchPage - 1) * 10));
-
-								// 使用正则表达式进行匹配
-								Matcher resultMatch = Pattern.compile("<h3><span>(\\d*?)</span>&nbsp;[\\s\\S]*?<strong class=\"name\"><span>(.*?)</span><br></strong>.*\\s.*\\s*(.*)").matcher(WebData);
-								List<MatchResult> matchResults = new ArrayList<>();
-
-								// 将匹配结果添加到列表中
-								while (resultMatch.find()) {
-									matchResults.add(resultMatch.toMatchResult());
-								}
-
-								// 检查是否找到任何结果
-								if (matchResults.isEmpty()) {
-									sendMsg.text("没有找到相关的东西");
-								} else {
-									// 获取 WebDataCard 的数据
-									String WebDataCard = getWebSourceCode("https://ygocdb.com/card/" + matchResults.get(isInUserList.userSearchCard - 1).group(1));
-
-									// 使用新的正则表达式匹配 QAUrl
-									Matcher QAUrlMatcher = Pattern.compile("title=\"数据库编号\">(\\d*)</span>").matcher(WebDataCard);
-
-									// 检查 QAUrlMatcher 是否找到匹配
-									if (QAUrlMatcher.find()) {
-										// 构建返回信息
-										returnMessage = "长度太长，超出QQ发送字数限制了，自己去官网看吧\n网址：https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=" + QAUrlMatcher.group(1) + "&request_locale=ja";
-									} else {
-										sendMsg.text("没有找到数据库编号信息");
-									}
-								}
-
-							}
-							// 返回单卡数据
-							sendMsg.text(returnMessage);
-						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
-						break;
-					}
-
-					case "卡片调整 ": {
-						Matcher matchResult = Pattern.compile("卡片调整 (\\d*)").matcher(arg);
-						if (!matchResult.find()) sendMsg.text("null");
-						String cardNumber = matchResult.group(1);
-
-						if (Integer.parseInt(cardNumber) < 11) {
+						if (arg.isEmpty() || arg.isBlank()) {
 							UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
 
 							// 不存在则返回
-							if (isInUserList.userSearchContent.equals("")) {
+							if (isInUserList.userSearchContent.isEmpty()) {
 								sendMsg.text("null");
 							} else {
 								// 修改用户数据并添加到列表
-								isInUserList.setUserSearchCard(Integer.parseInt(cardNumber));
-								isInUserList.setUserSearchProcess(0);
 								userSearchDataList.add(isInUserList);
-
 								String returnMessage = searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文调整") +
 										"{forwardmessage的分割符}" +
 										searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文faq");
@@ -399,8 +333,6 @@ public class YGOPlugin extends BotPlugin {
 
 									// 使用正则表达式进行匹配
 									Matcher resultMatch = Pattern.compile("<h3><span>(\\d*?)</span>&nbsp;[\\s\\S]*?<strong class=\"name\"><span>(.*?)</span><br></strong>.*\\s.*\\s*(.*)").matcher(WebData);
-
-									// 创建一个列表来存储匹配结果
 									List<MatchResult> matchResults = new ArrayList<>();
 
 									// 将匹配结果添加到列表中
@@ -427,58 +359,109 @@ public class YGOPlugin extends BotPlugin {
 										}
 									}
 
-
 								}
-
 								// 返回单卡数据
 								sendMsg.text(returnMessage);
+							}
+						} else {
+							if (Integer.parseInt(arg) < 11) {
+								UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
+
+								// 不存在则返回
+								if (isInUserList.userSearchContent.isEmpty()) {
+									sendMsg.text("null");
+								} else {
+									// 修改用户数据并添加到列表
+									isInUserList.setUserSearchCard(Integer.parseInt(arg));
+									isInUserList.setUserSearchProcess(0);
+									userSearchDataList.add(isInUserList);
+
+									String returnMessage = searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文调整") +
+											"{forwardmessage的分割符}" +
+											searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文faq");
+									if (returnMessage.length() > 5000) {
+										// 查卡
+										String cardToSearchInURL = URLEncoder.encode(isInUserList.userSearchContent, "UTF-8").replace(" ", "+");
+										String WebData = getWebSourceCode("https://ygocdb.com/more?search=" + cardToSearchInURL + "&start=" + ((isInUserList.userSearchPage - 1) * 10));
+
+										// 使用正则表达式进行匹配
+										Matcher resultMatch = Pattern.compile("<h3><span>(\\d*?)</span>&nbsp;[\\s\\S]*?<strong class=\"name\"><span>(.*?)</span><br></strong>.*\\s.*\\s*(.*)").matcher(WebData);
+
+										// 创建一个列表来存储匹配结果
+										List<MatchResult> matchResults = new ArrayList<>();
+
+										// 将匹配结果添加到列表中
+										while (resultMatch.find()) {
+											matchResults.add(resultMatch.toMatchResult());
+										}
+
+										// 检查是否找到任何结果
+										if (matchResults.isEmpty()) {
+											sendMsg.text("没有找到相关的东西");
+										} else {
+											// 获取 WebDataCard 的数据
+											String WebDataCard = getWebSourceCode("https://ygocdb.com/card/" + matchResults.get(isInUserList.userSearchCard - 1).group(1));
+
+											// 使用新的正则表达式匹配 QAUrl
+											Matcher QAUrlMatcher = Pattern.compile("title=\"数据库编号\">(\\d*)</span>").matcher(WebDataCard);
+
+											// 检查 QAUrlMatcher 是否找到匹配
+											if (QAUrlMatcher.find()) {
+												// 构建返回信息
+												returnMessage = "长度太长，超出QQ发送字数限制了，自己去官网看吧\n网址：https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=" + QAUrlMatcher.group(1) + "&request_locale=ja";
+											} else {
+												sendMsg.text("没有找到数据库编号信息");
+											}
+										}
+
+
+									}
+
+									// 返回单卡数据
+									sendMsg.text(returnMessage);
+								}
 							}
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
+
 					}
 
 					case "卡片价格": {
-						UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
-
-						// 不存在则返回
-						if (isInUserList.userSearchContent.equals("")) {
-							sendMsg.text("null");
-						} else {
-							// 修改用户数据并添加到列表
-							userSearchDataList.add(isInUserList);
-							// 返回单卡数据
-							sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "查价格"));
-						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
-						break;
-					}
-
-					case "卡片价格 ": {
-						Matcher matchResult = Pattern.compile("卡片价格 (\\d*)").matcher(arg);
-						if (!matchResult.find()) sendMsg.text("null");
-						String cardNumber = matchResult.group(1);
-
-						if (Integer.parseInt(cardNumber) < 11) {
+						if (arg.isEmpty() || arg.isBlank()) {
 							UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
 
 							// 不存在则返回
-							if (isInUserList.userSearchContent.equals("")) {
+							if (isInUserList.userSearchContent.isEmpty()) {
 								sendMsg.text("null");
-							} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
+							} else {
 								// 修改用户数据并添加到列表
-								isInUserList.setUserSearchCard(Integer.parseInt(cardNumber));
-								isInUserList.setUserSearchProcess(0);
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
 								sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "查价格"));
-							} else { // 翻页
-								// 修改用户数据并添加到列表
-								isInUserList.setUserSearchCard(Integer.parseInt(cardNumber));
-								isInUserList.setUserSearchProcess(0);
-								userSearchDataList.add(isInUserList);
-								// 返回单卡数据
-								sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "查价格"));
+							}
+						} else {
+							if (Integer.parseInt(arg) < 11) {
+								UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
+
+								// 不存在则返回
+								if (isInUserList.userSearchContent.isEmpty()) {
+									sendMsg.text("null");
+								} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
+									// 修改用户数据并添加到列表
+									isInUserList.setUserSearchCard(Integer.parseInt(arg));
+									isInUserList.setUserSearchProcess(0);
+									userSearchDataList.add(isInUserList);
+									// 返回单卡数据
+									sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "查价格"));
+								} else { // 翻页
+									// 修改用户数据并添加到列表
+									isInUserList.setUserSearchCard(Integer.parseInt(arg));
+									isInUserList.setUserSearchProcess(0);
+									userSearchDataList.add(isInUserList);
+									// 返回单卡数据
+									sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "查价格"));
+								}
 							}
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
@@ -901,7 +884,7 @@ public class YGOPlugin extends BotPlugin {
 					}
 				}
 			}
-		}else {
+		} else {
 			sendMsg.text(returnMessage);
 		}
 	}
