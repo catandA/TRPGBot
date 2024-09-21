@@ -170,7 +170,7 @@ public class YGOPlugin extends BotPlugin {
 
 						// 不存在则返回
 						if (isInUserList.getUserSearchContent().isEmpty()) {
-							sendMsg.text("null");
+							sendMsg.text("没有用户状态信息");
 						} else if (isInUserList.getUserSearchProcess() == 1) { // 如果是在单卡查询里了
 							if (isInUserList.getUserSearchPage() > 1) {
 								// 修改用户数据并添加到列表
@@ -179,14 +179,14 @@ public class YGOPlugin extends BotPlugin {
 								userSearchDataList.add(isInUserList);
 
 								// 返回单卡数据
-								sendMsg.text(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 2) * 10, isInUserList.getUserSearchCard(), ""));
+								handleMessage(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 2) * 10, isInUserList.getUserSearchCard(), ""), sendMsg);
 							}
 						} else { // 翻页
 							int page = isInUserList.getUserSearchPage();
 							if (page > 1) {
 								isInUserList.setUserSearchPage(page - 1);
 								userSearchDataList.add(isInUserList);
-								sendMsg.text(searchCard(isInUserList.getUserSearchContent(), (page - 2) * 10, 0, ""));
+								handleMessage(searchCard(isInUserList.getUserSearchContent(), (page - 2) * 10, 0, ""), sendMsg);
 							} else {
 								userSearchDataList.add(isInUserList);
 								sendMsg.text("已经是第一页了");
@@ -202,7 +202,7 @@ public class YGOPlugin extends BotPlugin {
 
 						// 不存在则返回
 						if (isInUserList.getUserSearchContent().isEmpty()) {
-							sendMsg.text("null");
+							sendMsg.text("没有用户状态信息");
 						} else if (isInUserList.getUserSearchProcess() == 1) { // 如果是在单卡查询里了
 							if (isInUserList.getUserSearchPage() < 10) {
 								// 修改用户数据并添加到列表
@@ -210,7 +210,7 @@ public class YGOPlugin extends BotPlugin {
 								isInUserList.setUserSearchProcess(1);
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
-								sendMsg.text(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 1) * 10, isInUserList.getUserSearchCard(), ""));
+								handleMessage(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 1) * 10, isInUserList.getUserSearchCard(), ""), sendMsg);
 							}
 						} else { // 翻页
 							int page = isInUserList.getUserSearchPage();
@@ -223,7 +223,7 @@ public class YGOPlugin extends BotPlugin {
 							} else {
 								isInUserList.setUserSearchPage(page + 1);
 								userSearchDataList.add(isInUserList);
-								sendMsg.text(content);
+								handleMessage(content, sendMsg);
 							}
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
@@ -231,25 +231,27 @@ public class YGOPlugin extends BotPlugin {
 					}
 
 					// 进入单卡
-					case "进入单卡 ": {
-						Pattern pattern = Pattern.compile("进入单卡 (\\d+)");
-						Matcher matchResult = pattern.matcher(arg);
-						if (!matchResult.find()) sendMsg.text("null");
-						int cardNumber = Integer.parseInt(matchResult.group(1));
+					case "进入单卡": {
+						if (arg.isEmpty() || arg.isBlank()) {
+							sendMsg.text("请输入要查询的");
+							bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
+							break;
+						}
+						int cardNumber = Integer.parseInt(arg);
 
 						if (cardNumber < 11) {
 							UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
 
 							// 不存在则返回
 							if (isInUserList.getUserSearchContent().isEmpty()) {
-								sendMsg.text("null");
+								sendMsg.text("未找到" + arg + "相关数据");
 							} else {
 								// 修改用户数据并添加到列表
 								isInUserList.setUserSearchCard(cardNumber);
 								isInUserList.setUserSearchProcess(1);
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
-								sendMsg.text(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 1) * 10, isInUserList.getUserSearchCard(), ""));
+								handleMessage(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 1) * 10, isInUserList.getUserSearchCard(), ""), sendMsg);
 							}
 						}
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
@@ -794,7 +796,7 @@ public class YGOPlugin extends BotPlugin {
 		return IOUtils.toString(url, StandardCharsets.UTF_8);
 	}
 
-	private Set<UserSearchData> userSearchDataList = new HashSet<>();
+	private static final Set<UserSearchData> userSearchDataList = new HashSet<>();
 
 	// 更新用户数据列表
 	public UserSearchData updateUserList(long userID) {
@@ -899,6 +901,8 @@ public class YGOPlugin extends BotPlugin {
 					}
 				}
 			}
+		}else {
+			sendMsg.text(returnMessage);
 		}
 	}
 
