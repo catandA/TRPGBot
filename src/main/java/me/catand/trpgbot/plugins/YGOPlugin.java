@@ -731,7 +731,7 @@ public class YGOPlugin extends BotPlugin {
 
 		if (!pEffect.isEmpty()) {
 			outputResult.append("灵摆效果：");
-			String[] effects = pEffect.contains("\\r") ? pEffect.split("\\r\\n") : pEffect.split("\\n");
+			String[] effects = pEffect.contains("\\r") ? pEffect.split("\\\\r\\\\n") : pEffect.split("\\\\n");
 			for (String effect : effects) {
 				outputResult.append(effect).append("\n");
 			}
@@ -740,7 +740,7 @@ public class YGOPlugin extends BotPlugin {
 			outputResult.append("效果或描述：\n");
 		}
 
-		String[] cardEffects = cardEffect.contains("\\r") ? cardEffect.split("\\r\\n") : cardEffect.split("\\n");
+		String[] cardEffects = cardEffect.contains("\\r") ? cardEffect.split("\\\\r\\\\n") : cardEffect.split("\\\\n");
 		for (String effect : cardEffects) {
 			outputResult.append(effect).append("\n");
 		}
