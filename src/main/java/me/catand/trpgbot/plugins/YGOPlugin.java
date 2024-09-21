@@ -277,6 +277,7 @@ public class YGOPlugin extends BotPlugin {
 						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
 					}
+
 					case "卡片收录": {
 						if (arg.isEmpty() || arg.isBlank()) {
 							UserSearchData isInUserList = updateUserList(event.getUserId()); // 获得用户数据
@@ -328,7 +329,7 @@ public class YGOPlugin extends BotPlugin {
 										searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "日文faq");
 								if (returnMessage.length() > 5000) {
 									// 查卡
-									String cardToSearchInURL = URLEncoder.encode(isInUserList.userSearchContent, "UTF-8").replace(" ", "+");
+									String cardToSearchInURL = URLEncoder.encode(isInUserList.userSearchContent, StandardCharsets.UTF_8).replace(" ", "+");
 									String WebData = getWebSourceCode("https://ygocdb.com/more?search=" + cardToSearchInURL + "&start=" + ((isInUserList.userSearchPage - 1) * 10));
 
 									// 使用正则表达式进行匹配
@@ -480,6 +481,7 @@ public class YGOPlugin extends BotPlugin {
 				}
 			} catch (Exception e) {
 				sendMsg.text("出错了\n" + e.getMessage());
+				bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 				e.printStackTrace();
 			}
 
