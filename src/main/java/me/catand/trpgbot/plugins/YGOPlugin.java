@@ -1,6 +1,7 @@
 package me.catand.trpgbot.plugins;
 
 import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.common.utils.ShiroUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
@@ -157,10 +158,14 @@ public class YGOPlugin extends BotPlugin {
 							userSearchDataList.add(isInUserList);
 
 							handleMessage(searchCard(arg, 0, 1, ""), sendMsg);
+							bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						} else {
 							handleMessage(returnMsg, sendMsg);
+							List<String> msgList = new ArrayList<>();
+							msgList.add(sendMsg.build());
+							List<Map<String, Object>> forwardMsg = ShiroUtils.generateForwardMsg(114514, "猪", msgList);
+							bot.sendGroupForwardMsg(event.getGroupId(), forwardMsg);
 						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
 					}
 
@@ -171,6 +176,7 @@ public class YGOPlugin extends BotPlugin {
 						// 不存在则返回
 						if (isInUserList.getUserSearchContent().isEmpty()) {
 							sendMsg.text("没有用户状态信息");
+							bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						} else if (isInUserList.getUserSearchProcess() == 1) { // 如果是在单卡查询里了
 							if (isInUserList.getUserSearchPage() > 1) {
 								// 修改用户数据并添加到列表
@@ -180,6 +186,7 @@ public class YGOPlugin extends BotPlugin {
 
 								// 返回单卡数据
 								handleMessage(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 2) * 10, isInUserList.getUserSearchCard(), ""), sendMsg);
+								bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 							}
 						} else { // 翻页
 							int page = isInUserList.getUserSearchPage();
@@ -187,12 +194,16 @@ public class YGOPlugin extends BotPlugin {
 								isInUserList.setUserSearchPage(page - 1);
 								userSearchDataList.add(isInUserList);
 								handleMessage(searchCard(isInUserList.getUserSearchContent(), (page - 2) * 10, 0, ""), sendMsg);
+								List<String> msgList = new ArrayList<>();
+								msgList.add(sendMsg.build());
+								List<Map<String, Object>> forwardMsg = ShiroUtils.generateForwardMsg(114514, "猪", msgList);
+								bot.sendGroupForwardMsg(event.getGroupId(), forwardMsg);
 							} else {
 								userSearchDataList.add(isInUserList);
 								sendMsg.text("已经是第一页了");
+								bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 							}
 						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
 					}
 
@@ -203,6 +214,7 @@ public class YGOPlugin extends BotPlugin {
 						// 不存在则返回
 						if (isInUserList.getUserSearchContent().isEmpty()) {
 							sendMsg.text("没有用户状态信息");
+							bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						} else if (isInUserList.getUserSearchProcess() == 1) { // 如果是在单卡查询里了
 							if (isInUserList.getUserSearchPage() < 10) {
 								// 修改用户数据并添加到列表
@@ -211,6 +223,7 @@ public class YGOPlugin extends BotPlugin {
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
 								handleMessage(searchCard(isInUserList.getUserSearchContent(), (isInUserList.getUserSearchPage() - 1) * 10, isInUserList.getUserSearchCard(), ""), sendMsg);
+								bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 							}
 						} else { // 翻页
 							int page = isInUserList.getUserSearchPage();
@@ -220,13 +233,17 @@ public class YGOPlugin extends BotPlugin {
 							if (content.equals("没有找到相关的东西")) {
 								userSearchDataList.add(isInUserList);
 								sendMsg.text("已经是最后一页了");
+								bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 							} else {
 								isInUserList.setUserSearchPage(page + 1);
 								userSearchDataList.add(isInUserList);
 								handleMessage(content, sendMsg);
+								List<String> msgList = new ArrayList<>();
+								msgList.add(sendMsg.build());
+								List<Map<String, Object>> forwardMsg = ShiroUtils.generateForwardMsg(114514, "猪", msgList);
+								bot.sendGroupForwardMsg(event.getGroupId(), forwardMsg);
 							}
 						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
 					}
 
@@ -285,12 +302,17 @@ public class YGOPlugin extends BotPlugin {
 							// 不存在则返回
 							if (isInUserList.userSearchContent.isEmpty()) {
 								sendMsg.text("没有用户状态信息");
+								bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 							} else if (isInUserList.userSearchProcess == 1) { // 如果是在单卡查询里了
 								// 修改用户数据并添加到列表
 								userSearchDataList.add(isInUserList);
 								// 返回单卡数据
 								sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "md卡包") + "\n" +
 										searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "ocg收录"));
+								List<String> msgList = new ArrayList<>();
+								msgList.add(sendMsg.build());
+								List<Map<String, Object>> forwardMsg = ShiroUtils.generateForwardMsg(114514, "猪", msgList);
+								bot.sendGroupForwardMsg(event.getGroupId(), forwardMsg);
 							}
 						} else {
 							if (Integer.parseInt(arg) < 11) {
@@ -299,6 +321,7 @@ public class YGOPlugin extends BotPlugin {
 								// 不存在则返回
 								if (isInUserList.userSearchContent.isEmpty()) {
 									sendMsg.text("没有用户状态信息");
+									bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 								} else {
 									// 修改用户数据并添加到列表
 									isInUserList.setUserSearchCard(Integer.parseInt(arg));
@@ -307,10 +330,13 @@ public class YGOPlugin extends BotPlugin {
 									// 返回单卡数据
 									sendMsg.text(searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "md卡包") + "\n" +
 											searchCard(isInUserList.userSearchContent, (isInUserList.userSearchPage - 1) * 10, isInUserList.userSearchCard, "ocg收录"));
+									List<String> msgList = new ArrayList<>();
+									msgList.add(sendMsg.build());
+									List<Map<String, Object>> forwardMsg = ShiroUtils.generateForwardMsg(114514, "猪", msgList);
+									bot.sendGroupForwardMsg(event.getGroupId(), forwardMsg);
 								}
 							}
 						}
-						bot.sendGroupMsg(event.getGroupId(), event.getUserId(), sendMsg.build(), false);
 						break;
 					}
 
@@ -541,7 +567,7 @@ public class YGOPlugin extends BotPlugin {
 				outputResult.append(matcher.group(3));
 			}
 
-			outputResult.append("\n卡片密码：").append(cardIdResultMatch.get(resultNumber - 1).group(1));
+			outputResult.append("\n卡片ID：").append(cardIdResultMatch.get(resultNumber - 1).group(1));
 			outputResult.append("{forwardmessage的图片}:").append(cardIdResultMatch.get(resultNumber - 1).group(1));
 			outputResult.append("{forwardmessage的分割符}");
 
