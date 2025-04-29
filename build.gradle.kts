@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.catand"
-version = "0.0.1-SNAPSHOT"
+version = "gensokyo"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
