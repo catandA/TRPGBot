@@ -41,6 +41,11 @@ public class DicePlugin extends BotPlugin {
 					times = Integer.parseInt(matcher.group(1));
 				}
 				int max = Integer.parseInt(matcher.group(2));
+				if (max == 0) {
+					sendMsg.text("我嘞个虚空神骰");
+					bot.sendGroupMsg(event.getGroupId(), sendMsg.build(), false);
+					return MESSAGE_BLOCK;
+				}
 				if (times == 1) {
 					sendMsg.text("D" + max + "投出了[" + (int) (Math.random() * max + 1) + "]");
 				} else if (times>40){
