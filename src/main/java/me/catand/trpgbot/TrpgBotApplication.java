@@ -7,17 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TrpgBotApplication extends Application {
+public class TrpgBotApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrpgBotApplication.class, args);
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) {
-		Platform.runLater(() -> {
-			// Your JavaFX code here
-		});
 	}
 }

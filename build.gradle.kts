@@ -2,7 +2,6 @@ plugins {
     java
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 group = "me.catand"
@@ -16,11 +15,6 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
-}
-
-javafx {
-    version = "24-ea+5"
-    modules = listOf("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.swing")
 }
 
 repositories {
@@ -40,16 +34,4 @@ dependencies {
 
     // Shiro
     implementation("com.mikuac:shiro:2.3.5")
-
-    // Database
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.xerial:sqlite-jdbc:3.48.0.0")
-    implementation("org.hibernate.orm:hibernate-community-dialects:6.6.5.Final")
-
-    // 词云
-    implementation("com.kennycason:kumo-core:1.28")
-    //implementation("com.kennycason:kumo-tokenizers:1.28")
-
-    // 结巴分词
-    implementation("com.huaban:jieba-analysis:1.0.2")
 }
